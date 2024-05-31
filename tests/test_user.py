@@ -40,7 +40,6 @@ class TestUser:
           "password": "pass1", "phone": "1234567890", "userStatus": 1}, 200),
         ({"id": 2, "username": "user2", "firstName": "Example", "lastName": "User", "email": "testuser2@example.com",
           "password": "pass2", "phone": "0987654321", "userStatus": 1}, 404),
-        # Добавьте дополнительные наборы данных с разными ожидаемыми результатами
     ])
     def test_update_user(self, user_data, expected_status):
         """ Тестирование эндпоинта обновления данных пользователя по его username """
