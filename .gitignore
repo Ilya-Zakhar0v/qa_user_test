@@ -1,5 +1,3 @@
-## created by virtualenv automatically
-#*
 /.pytest_cache
 test_reports/
 env/
