@@ -1,6 +1,6 @@
 ## Установка
 ```shell
-~ >>> cd qaa_test_user_project
+~ >>> cd qa_user_test
 ~ >>> python3 -m venv venv
 ~ >>> source venv/bin/activate
 ~ >>> pip3 install -r requirements.txt
