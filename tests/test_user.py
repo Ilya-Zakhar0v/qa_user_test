@@ -12,16 +12,30 @@ class TestUser:
 
     @allure.story('Create User')
     @allure.severity(allure.severity_level.CRITICAL)
-    def test_create_user(self):
+    @pytest.mark.parametrize("body_data, expected_status_code", [
+        ({"username": "user1", "firstName": "FirstName1", "lastName": "LastName1", "email": "email1@example.com",
+          "password": "", "phone": 89997775544, "userStatus": '1'}, 400),
+        # Ожидаем 400 из-за неправильного пароля и значения int в ключе phone
+        ({"username": "user2", "firstName": "FirstName2", "lastName": "LastName2", "email": "email2@example.com",
+          "password": "password2", "phone": "222-222-2222", "userStatus": 2}, 200),
+        ({"username": "user3", "firstName": "FirstName3", "lastName": "LastName3", "email": "email3@example.com",
+          "password": "password3", "phone": "333-333-3333", "userStatus": 3}, 200)
+    ])
+    def test_create_user(self, body_data, expected_status_code):
         """ Тестирование эндпоинта создания пользователя """
 
-        res = self.user.create_user(self.user.headers, self.user.body_data)
+        body_data_merged = self.user.body_data.copy()
+        body_data_merged.update(body_data)
 
-        with allure.step('Check response code equals 200'):  # Добавляем шаг в отчет
-            check.equal(res.json()['code'], 200, "err")
+        res = self.user.create_user(self.user.headers, body_data_merged)
 
-        with allure.step('Check status code equals 200'):
-            check.equal(res.status_code, 200, "status code error")
+        with allure.step(f'Check response code equals {expected_status_code}'):
+            check.equal(res.status_code, expected_status_code,
+                        f"Expected status code was {expected_status_code}, but got {res.status_code}")
+
+            if expected_status_code == 200:
+                with allure.step('Check JSON code in response equals 200'):
+                    check.equal(res.json()['code'], 200, "Expected JSON response code 200, but got an error")
 
     @allure.story('Get User Info')
     @allure.severity(allure.severity_level.NORMAL)
