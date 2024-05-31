@@ -35,24 +35,21 @@ class TestUser:
 
     @allure.story('Update User')
     @allure.severity(allure.severity_level.NORMAL)
-    def test_update_user(self, user_name):
+    @pytest.mark.parametrize("user_data, expected_status", [
+        ({"id": 1, "username": "user1", "firstName": "Test", "lastName": "User", "email": "testuser1@example.com",
+          "password": "pass1", "phone": "1234567890", "userStatus": 1}, 200),
+        ({"id": 2, "username": "user2", "firstName": "Example", "lastName": "User", "email": "testuser2@example.com",
+          "password": "pass2", "phone": "0987654321", "userStatus": 1}, 404),
+        # Добавьте дополнительные наборы данных с разными ожидаемыми результатами
+    ])
+    def test_update_user(self, user_data, expected_status):
         """ Тестирование эндпоинта обновления данных пользователя по его username """
 
-        json_data = {
-            "id": 0,
-            "username": "string",
-            "firstName": "string",
-            "lastName": "string",
-            "email": "string",
-            "password": "string",
-            "phone": "string",
-            "userStatus": 0
-        }
+        res = self.user.update_user(headers=self.user.headers, body=user_data, params=user_data['username'])
 
-        res = self.user.update_user(headers=self.user.headers, body=json_data, params=self.user_name)
-
-        with allure.step('Check status code equals 200'):
-            check.equal(res.status_code, 200, "status code error")
+        with allure.step(f'Check status code equals {expected_status}'):
+            check.equal(res.status_code, expected_status,
+                        f"Expected status code {expected_status}, but got {res.status_code}")
 
     @allure.story('Delete User')
     @allure.severity(allure.severity_level.MINOR)

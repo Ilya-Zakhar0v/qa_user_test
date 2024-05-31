@@ -49,6 +49,9 @@ class User:
         except requests.exceptions.RequestException as err:
             print("Некорректный запрос", err)
             return None
+        except ValidationError as e:
+            self.logger.error(f"Response validation error: {e.json()}")
+            return None
 
     def update_user(self, headers: dict, body: dict, params: str):
         try:
@@ -59,6 +62,9 @@ class User:
         except requests.exceptions.RequestException as err:
             print("Некорректный запрос", err)
             return None
+        except ValidationError as e:
+            self.logger.error(f"Response validation error: {e.json()}")
+            return None
 
     def delete_user(self, headers: dict, params: str):
         try:
@@ -67,5 +73,8 @@ class User:
             return response
         except requests.exceptions.RequestException as err:
             print("Некорректный запрос", err)
+            return None
+        except ValidationError as e:
+            self.logger.error(f"Response validation error: {e.json()}")
             return None
 
