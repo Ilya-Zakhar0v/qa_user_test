@@ -4,3 +4,4 @@
 test_reports/
 env/
 .idea/
+tests_results/
