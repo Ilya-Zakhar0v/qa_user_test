@@ -3,6 +3,7 @@ from endpoints.user.api import User
 import pytest_check as check
 import allure
 
+# master
 
 @allure.feature('User Management')
 @pytest.mark.usefixtures("user_name")
