@@ -8,7 +8,7 @@ import allure
 @pytest.mark.usefixtures("user_name")
 class TestUser:
 
-    #hellowewe
+    #hellowewe erer
     user = User()
 
     @allure.story('Create User')
